@@ -1,6 +1,6 @@
 {
   "name": "@afagund/semantic-release-monorepo",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "description": "semantic-release for one project in a monorepo directory: only its commits count, its own changelog, and tags prefixed with the directory name. Presets per project type (helm).",
   "keywords": [
     "semantic-release",

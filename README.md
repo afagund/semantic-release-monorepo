@@ -75,14 +75,62 @@ publishes to npm, updates `CHANGELOG.md` and the version in `package.json`,
 commits them as `chore(release): vX.Y.Z [skip ci]`, tags `vX.Y.Z` and pushes
 both.
 
-It needs an npm login with publish rights on the `@afagund` scope
-(`npm login`, or `NPM_TOKEN` in the environment):
+### Before the first release
+
+- Log in to npm as `afagund` once: `npm login`. The token it saves in
+  `~/.npmrc` is what semantic-release publishes with; `npm whoami` checks it.
+- npm 2FA must be off or "authorization only". With "authorization and
+  writes", `npm publish` asks for a code that semantic-release can't give, and
+  you need a granular access token instead (publish rights on `@afagund`,
+  "bypass 2FA" ticked), passed as `NPM_TOKEN`. A token in `~/.npmrc` takes
+  precedence over `NPM_TOKEN`, so `npm logout` first in that case.
+- Pushing the release commit and tag uses the repo's SSH key (`git push` must
+  work from `main`).
+
+### Cutting a release
+
+1. Merge the changes into `main` through a PR. Only `feat`, `fix`, `perf` and
+   breaking changes release.
+2. Update and test `main`:
+
+   ```sh
+   git switch main
+   git pull --ff-only
+   npm ci
+   npm test
+   ```
+
+3. Check what would be released (no changes made):
+
+   ```sh
+   npx semantic-release --no-ci --dry-run
+   ```
+
+   It should say "The next release version is X.Y.Z" and show the notes. "There
+   are no relevant changes" means nothing releases.
+4. Release:
+
+   ```sh
+   npx semantic-release --no-ci
+   ```
+
+   It sets the version, writes `CHANGELOG.md`, commits and pushes
+   `chore(release): vX.Y.Z [skip ci]` and the `vX.Y.Z` tag, then runs
+   `npm publish`.
+5. Check it's out: `npm view @afagund/semantic-release-monorepo version`.
+
+### If the publish fails
+
+The release commit and tag are pushed before `npm publish` runs, so after a
+failed publish the version is tagged but not on npm, and the next run won't
+retry it. Fix the cause (usually auth), then publish the tag by hand; its
+`package.json` already has the version:
 
 ```sh
-npm install
-npm test
-npx semantic-release --no-ci --dry-run   # shows the next version and its notes
-npx semantic-release --no-ci
+git switch --detach vX.Y.Z
+npm ci
+npm publish --tag latest
+git switch main
 ```
 
 ## License

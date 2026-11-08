@@ -77,13 +77,27 @@ both.
 
 ### Before the first release
 
-- Log in to npm as `afagund` once: `npm login`. The token it saves in
-  `~/.npmrc` is what semantic-release publishes with; `npm whoami` checks it.
-- npm 2FA must be off or "authorization only". With "authorization and
-  writes", `npm publish` asks for a code that semantic-release can't give, and
-  you need a granular access token instead (publish rights on `@afagund`,
-  "bypass 2FA" ticked), passed as `NPM_TOKEN`. A token in `~/.npmrc` takes
-  precedence over `NPM_TOKEN`, so `npm logout` first in that case.
+- npm only accepts a publish with 2FA or a granular access token that
+  bypasses it; a plain `npm login` session gets a 403. semantic-release can't
+  type a 2FA code, so it publishes with a granular access token: "Bypass 2FA"
+  ticked, "Read and write (publish and stage)", the `@afagund` scope, and an
+  expiry date.
+- Keep the token in `~/Documents/git/lempelz/.env` as `NPM_TOKEN=npm_...`, and
+  have `~/.npmrc` read it from the environment instead of holding a token
+  itself (`npm logout` first if `npm login` left one there, since a token in
+  `~/.npmrc` takes precedence):
+
+  ```sh
+  echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> ~/.npmrc
+  ```
+
+  Load it in the shell you release from, and check it:
+
+  ```sh
+  set -a; . ~/Documents/git/lempelz/.env; set +a
+  npm whoami   # afagund
+  ```
+
 - Pushing the release commit and tag uses the repo's SSH key (`git push` must
   work from `main`).
 
@@ -132,6 +146,13 @@ npm ci
 npm publish --tag latest
 git switch main
 ```
+
+npm never accepts a version twice, even after it was unpublished or the
+package was deleted ("Cannot publish over previously published version").
+In that case keep the tag and release commit, and release the next version
+instead: merge a `fix` commit saying why (an empty one is fine), then cut a
+release as above. That's how 1.0.0 went: it was unpublished, so the first
+installable version is 1.0.1.
 
 ## License
 

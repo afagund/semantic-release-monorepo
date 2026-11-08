@@ -1,0 +1,51 @@
+{
+  "name": "@afagund/semantic-release-monorepo",
+  "version": "0.0.0-development",
+  "description": "semantic-release for one project in a monorepo directory: only its commits count, its own changelog, and tags prefixed with the directory name. Presets per project type (helm).",
+  "keywords": [
+    "semantic-release",
+    "semantic-release-config",
+    "semantic-release-plugin",
+    "monorepo",
+    "helm"
+  ],
+  "license": "MIT",
+  "author": "afagund",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afagund/semantic-release-monorepo.git"
+  },
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./helm": "./presets/helm.js",
+    "./path-filter": "./lib/path-filter.js"
+  },
+  "files": [
+    "index.js",
+    "lib/",
+    "presets/"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "dependencies": {
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^11.0.1",
+    "@semantic-release/release-notes-generator": "^14.1.1"
+  },
+  "devDependencies": {
+    "semantic-release": "^25.0.9"
+  },
+  "peerDependencies": {
+    "semantic-release": ">=25.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

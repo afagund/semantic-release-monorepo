@@ -132,6 +132,14 @@ both.
    `chore(release): vX.Y.Z [skip ci]` and the `vX.Y.Z` tag, then runs
    `npm publish`.
 5. Check it's out: `npm view @afagund/semantic-release-monorepo version`.
+   npm runs an automated review of each new version first ("Validating" on the
+   package's Versions tab), and the version can't be installed until it ends,
+   usually within a minute or two. Until then `npm view` shows the previous
+   version, or a 404 on a first release.
+
+npm also lists a `0.0.0-stage` version, a placeholder it created for staged
+publishing ("Temporary package placeholder for staged publishing"). Nothing
+installs it by default, since `latest` points at the real releases.
 
 ### If the publish fails
 

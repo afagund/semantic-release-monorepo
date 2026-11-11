@@ -95,3 +95,19 @@ test('release notes from ssh.bitbucket.org link to bitbucket.org commits', async
   assert.match(notes, new RegExp(`https://bitbucket\\.org/afagund/x/commits/${commits[0].hash}`));
   assert.doesNotMatch(notes, /ssh\.bitbucket\.org/);
 });
+
+test('release notes on Bitbucket link to its branch compare page', async () => {
+  const { root, commits } = makeRepo([['helm/values.yaml', 'fix(helm): default port']]);
+  const context = (repositoryUrl) => ({
+    cwd: path.join(root, 'helm'),
+    commits,
+    lastRelease: { gitTag: 'helm-1.0.0' },
+    nextRelease: { version: '1.0.1', gitTag: 'helm-1.0.1' },
+    options: { repositoryUrl },
+    logger,
+  });
+  const bitbucket = await generateNotes({}, context('git@ssh.bitbucket.org:afagund/x.git'));
+  assert.match(bitbucket, /\(https:\/\/bitbucket\.org\/afagund\/x\/branches\/compare\/helm-1\.0\.1%0Dhelm-1\.0\.0\)/);
+  const github = await generateNotes({}, context('git@github.com:afagund/x.git'));
+  assert.match(github, /\(https:\/\/github\.com\/afagund\/x\/compare\/helm-1\.0\.0\.\.\.helm-1\.0\.1\)/);
+});

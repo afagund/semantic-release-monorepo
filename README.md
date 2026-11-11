@@ -10,8 +10,10 @@ Run semantic-release from the project's directory and:
 - its tags are prefixed with the directory's name (`helm-1.2.0`, `lib-0.3.0`);
 - the release commit is `chore(release): <tag> [skip ci]`, with only that
   project's files.
-- release notes of a repo cloned from `ssh.bitbucket.org` (Bitbucket's
-  SSH-only host) link to `bitbucket.org`.
+- release notes of a repo on Bitbucket link to its web pages, even when it's
+  cloned from `ssh.bitbucket.org` (Bitbucket's SSH-only host): commits at
+  `bitbucket.org/<owner>/<repo>/commits/<sha>`, and the release to its
+  branch compare page.
 
 It releases from `main` or `master`, whichever the repo has.
 

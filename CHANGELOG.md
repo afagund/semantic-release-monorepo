@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/afagund/semantic-release-monorepo/compare/v1.0.1...v1.0.2) (2026-11-11)
+
+
+### Bug Fixes
+
+* **notes:** link ssh.bitbucket.org repos to bitbucket.org ([07a99d6](https://github.com/afagund/semantic-release-monorepo/commit/07a99d608ab5188c983f636bd4822c97091d88c4))
+
 ## [1.0.1](https://github.com/afagund/semantic-release-monorepo/compare/v1.0.0...v1.0.1) (2026-11-09)
 
 

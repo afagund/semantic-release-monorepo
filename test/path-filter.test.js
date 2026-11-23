@@ -42,6 +42,17 @@ test('keeps only the commits that touch the cwd', () => {
   assert.deepStrictEqual(kept.map((c) => c.message), ['fix(helm): default port', 'feat(helm): add the chart']);
 });
 
+test('also keeps the commits that touch an extra path', () => {
+  const { root, commits } = makeRepo([
+    ['helm/Chart.yaml', 'feat(helm): add the chart'],
+    ['schema.json', 'feat(schema): add a field'],
+    ['README.md', 'fix(readme): typo'],
+  ]);
+  const env = { RELEASE_EXTRA_PATHS: 'schema.json:missing/' };
+  const kept = filterCommits({ cwd: path.join(root, 'helm'), commits, lastRelease: {}, logger, env });
+  assert.deepStrictEqual(kept.map((c) => c.message), ['feat(schema): add a field', 'feat(helm): add the chart']);
+});
+
 test('only looks at commits after the last release', () => {
   const { root, commits } = makeRepo([
     ['helm/Chart.yaml', 'feat(helm): add the chart'],

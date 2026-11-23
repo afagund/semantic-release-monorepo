@@ -1,5 +1,17 @@
 # Changelog
 
+# [1.1.0](https://github.com/afagund/semantic-release-monorepo/compare/v1.0.2...v1.1.0) (2026-11-23)
+
+
+### Bug Fixes
+
+* **notes:** link Bitbucket releases to its branch compare page ([01ce0d9](https://github.com/afagund/semantic-release-monorepo/commit/01ce0d98ab4451ff13ec0bde8b45be2ee225dcbb))
+
+
+### Features
+
+* **path-filter:** count commits under extra paths ([6f1bc91](https://github.com/afagund/semantic-release-monorepo/commit/6f1bc9134a3ff88b5a3ccc13cb1cdf39f8775721))
+
 ## [1.0.2](https://github.com/afagund/semantic-release-monorepo/compare/v1.0.1...v1.0.2) (2026-11-11)
 
 

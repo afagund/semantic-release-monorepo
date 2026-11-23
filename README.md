@@ -47,6 +47,21 @@ A preset is the base config plus the steps one kind of project needs.
 | --- | --- | --- |
 | Helm chart | `@afagund/semantic-release-monorepo/helm` | sets `version` in `Chart.yaml` and regenerates the chart's `README.md` with [helm-docs](https://github.com/norwoodj/helm-docs) (which must be on the `PATH`), and commits both |
 
+## Extra paths
+
+A project can be made of more than its directory: shared code, or a schema it
+bundles. List those paths, relative to the repo root and separated by `:`, in
+`RELEASE_EXTRA_PATHS` when running semantic-release. A commit touching one of
+them then counts as the project's, for its version and its release notes, as
+one under its directory does:
+
+```sh
+cd docker/greeter
+RELEASE_EXTRA_PATHS=schemas/greeting.schema.json:libs/python/common semantic-release
+```
+
+Without it, only the directory's own commits count.
+
 ## Path filter only
 
 For a config of your own, use the commit filter in place of
